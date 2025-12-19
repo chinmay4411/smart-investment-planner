@@ -1,0 +1,54 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+PS C:\Users\dchin> psql --version
+psql (PostgreSQL) 18.1
+PS C:\Users\dchin> psql "postgresql://smart_user:zQ5tc8BlYNqfLKWMZeBlhQBKq4gr3DAu@dpg-d51bpn7fte5s73927p8g-a.oregon-postgres.render.com:5432/smart_invest_t8hs"
+psql (18.1)
+WARNING: Console code page (437) differs from Windows code page (1252)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+SSL connection (protocol: TLSv1.3, cipher: TLS_AES_128_GCM_SHA256, compression: off, ALPN: none)
+Type "help" for help.
+
+smart_invest_t8hs=> \dt
+           List of tables
+ Schema | Name  | Type  |   Owner
+--------+-------+-------+------------
+ public | goals | table | smart_user
+(1 row)
+
+
+smart_invest_t8hs=> SELECT * FROM goals;
+ id | name | target | months | current_saved | risk | sip | projection | milestones | created_at
+----+------+--------+--------+---------------+------+-----+------------+------------+------------
+(0 rows)
+
+
+smart_invest_t8hs=> DELETE FROM goals WHERE id = 1;
+DELETE 0
+smart_invest_t8hs=> INSERT INTO goals
+smart_invest_t8hs-> (name, target, months, current_saved, risk, sip, projection, milestones)
+smart_invest_t8hs-> VALUES
+smart_invest_t8hs-> ('Buy Laptop', 80000, 12, 10000, 'Medium', 5500, '[]', '[]'),
+smart_invest_t8hs-> ('Emergency Fund', 300000, 24, 50000, 'Low', 9000, '[]', '[]'),
+smart_invest_t8hs-> ('Europe Trip', 250000, 18, 30000, 'Medium', 11000, '[]', '[]'),
+smart_invest_t8hs-> ('Bike Purchase', 180000, 10, 20000, 'High', 14000, '[]', '[]'),
+smart_invest_t8hs-> ('House Down Payment', 1500000, 60, 200000, 'Low', 18000, '[]', '[]');
+INSERT 0 5
+smart_invest_t8hs=>
+smart_invest_t8hs=> SELECT id, name, target, months, sip, risk FROM goals;
+ id |        name        | target  | months |  sip  |  risk
+----+--------------------+---------+--------+-------+--------
+  1 | Buy Laptop         |   80000 |     12 |  5500 | Medium
+  2 | Emergency Fund     |  300000 |     24 |  9000 | Low
+  3 | Europe Trip        |  250000 |     18 | 11000 | Medium
+  4 | Bike Purchase      |  180000 |     10 | 14000 | High
+  5 | House Down Payment | 1500000 |     60 | 18000 | Low
+(5 rows)
+
+
+smart_invest_t8hs=>
+to acces the dataset 

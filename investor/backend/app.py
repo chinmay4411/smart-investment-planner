@@ -14,7 +14,8 @@ from utils.enhanced_ml_advisor import enhanced_ml_advisor
 from tinydb import TinyDB
 from datetime import datetime
 import requests
-
+import psycopg2, json
+from psycopg2.extras import RealDictCursor
 # -------------------------
 # LOAD ENV
 # -------------------------
@@ -44,6 +45,148 @@ os.makedirs(KB_DIR, exist_ok=True)
 DB_FILE = os.path.join(DATA_DIR, "db.json")
 db = TinyDB(DB_FILE)
 records_table = db.table("records")
+goals_table = db.table("goals")
+print(f"📦 TinyDB path: {DB_FILE}")
+
+
+
+# ===============================
+# POSTGRESQL (CLOUD PRIMARY)
+# ===============================
+pg_conn = psycopg2.connect(
+    host=os.getenv("PG_HOST"),
+    port=os.getenv("PG_PORT"),
+    database=os.getenv("PG_DATABASE"),
+    user=os.getenv("PG_USER"),
+    password=os.getenv("PG_PASSWORD"),
+)
+pg_cursor = pg_conn.cursor()
+print("✅ PostgreSQL connected")
+
+pg_cursor.execute("""
+CREATE TABLE IF NOT EXISTS goals (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    target NUMERIC,
+    months INTEGER,
+    current_saved NUMERIC,
+    risk TEXT,
+    sip INTEGER,
+    projection JSONB,
+    milestones JSONB,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+""")
+pg_conn.commit()
+print("✅ PostgreSQL tables ready")
+
+# =========================================================
+# GOALS API (ONLY ONE SOURCE OF TRUTH)
+# =========================================================
+@app.route("/api/goals", methods=["POST"])
+def create_goal():
+    data = request.get_json(force=True)
+
+    # Save to PostgreSQL
+    pg_cursor.execute("""
+        INSERT INTO goals
+        (name, target, months, current_saved, risk, sip, projection, milestones)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        RETURNING id
+    """, (
+        data["name"],
+        data["target"],
+        data["months"],
+        data["currentSaved"],
+        data["risk"],
+        data["sip"],
+        json.dumps(data.get("projection", [])),
+        json.dumps(data.get("milestones", [])),
+    ))
+    pg_id = pg_cursor.fetchone()[0]
+    pg_conn.commit()
+
+    # Backup TinyDB
+    goals_table.insert(data)
+
+    return jsonify({"id": pg_id}), 201
+
+
+    # 1️⃣ TinyDB (Backup)
+    tiny_id = goals_table.insert(goal)
+
+    # 2️⃣ PostgreSQL (Primary)
+    pg_cursor.execute("""
+        INSERT INTO goals
+        (name, target, months, current_saved, risk, sip, projection, milestones)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        RETURNING id
+    """, (
+        goal["name"],
+        goal["target"],
+        goal["months"],
+        goal["currentSaved"],
+        goal["risk"],
+        goal["sip"],
+        json.dumps(goal["projection"]),
+        json.dumps(goal["milestones"])
+    ))
+
+    pg_id = pg_cursor.fetchone()[0]
+    pg_conn.commit()
+
+    return jsonify({
+        "message": "Goal saved successfully",
+        "postgres_id": pg_id,
+        "tinydb_id": tiny_id
+    }), 201
+
+
+@app.route("/api/goals", methods=["GET"])
+def get_goals():
+    pg_cursor.execute("""
+        SELECT id, name, target, months, current_saved,
+               risk, sip, projection, milestones, created_at
+        FROM goals
+        ORDER BY created_at DESC
+    """)
+    rows = pg_cursor.fetchall()
+
+    return jsonify([
+        {
+            "id": r[0],
+            "name": r[1],
+            "target": float(r[2]),
+            "months": r[3],
+            "currentSaved": float(r[4]),
+            "risk": r[5],
+            "sip": r[6],
+            "projection": r[7],
+            "milestones": r[8],
+            "createdAt": r[9].isoformat()
+        } for r in rows
+    ])
+
+
+@app.route("/api/goals/<int:goal_id>", methods=["DELETE"])
+def delete_goal(goal_id):
+    pg_cursor.execute("DELETE FROM goals WHERE id=%s", (goal_id,))
+    pg_conn.commit()
+    return jsonify({"message": "Goal deleted"})
+
+
+# =========================================================
+# BASIC ROUTES
+# =========================================================
+
+@app.route("/")
+def home():
+    return jsonify({"status": "Backend running"})
+
+@app.route("/history/goals", methods=["GET"], endpoint="history_goals")
+def history_goals():
+    return jsonify(goals_table.all())
+
 
 # -------------------------
 # HELPER: Get advice from local Ollama model or fallback
@@ -533,6 +676,41 @@ def chatbot():
         answer = "I'm here to help! Try asking about SIP, FD, or investment planning."
 
     return jsonify({"answer": answer})
+
+# data base render
+
+pg_conn = psycopg2.connect(
+    host=os.getenv("PG_HOST"),
+    port=os.getenv("PG_PORT"),
+    database=os.getenv("PG_DATABASE"),
+    user=os.getenv("PG_USER"),
+    password=os.getenv("PG_PASSWORD"),
+)
+pg_cursor = pg_conn.cursor()
+
+print("✅ PostgreSQL connected successfully")
+def create_pg_tables():
+    pg_cursor.execute("""
+        CREATE TABLE IF NOT EXISTS goals (
+            id SERIAL PRIMARY KEY,
+            name TEXT,
+            target NUMERIC,
+            months INTEGER,
+            current_saved NUMERIC,
+            risk TEXT,
+            sip INTEGER,
+            projection JSONB,
+            milestones JSONB,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    """)
+    pg_conn.commit()
+    print("✅ PostgreSQL tables ready")
+create_pg_tables()
+pg_cursor = pg_conn.cursor()
+
+
+
 
 # MAIN
 # -------------------------
