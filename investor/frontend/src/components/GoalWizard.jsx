@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./GoalWizard.css";
 import { saveGoal } from "../api/goalService";
-import { saveGoalSimple } from "../api/simpleGoalService";
+
 
 import { useNavigate } from "react-router-dom";
 import {
