@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./GoalWizard.css";
 import { saveGoal } from "../api/goalService";
 
-
 import { useNavigate } from "react-router-dom";
 import {
   LineChart,
@@ -32,7 +31,6 @@ export default function GoalWizard() {
   const [risk, setRisk] = useState("Medium");
   const [monthlyReturn, setMonthlyReturn] = useState(0.008);
 
-  // 💡 FIX: useEffect dependency correct now
   useEffect(() => {
     setMonthlyReturn(monthlyRateByRisk[risk]);
   }, [risk]);
@@ -45,7 +43,6 @@ export default function GoalWizard() {
     }
   }
 
-  // SIP Formula
   function calcMonthlySIP(target, currentSaved, months, monthlyReturn) {
     const r = monthlyReturn;
     const n = Math.max(1, Math.floor(months));
