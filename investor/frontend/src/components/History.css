@@ -1,0 +1,149 @@
+/* ============================== */
+/* Investment History Container */
+.history-container {
+  max-width: 1000px;
+  margin: 3rem auto;
+  background: #ffffff;
+  border-radius: 1rem;
+  padding: 2.5rem;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  animation: fadeIn 0.6s ease-in-out;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.history-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* ============================== */
+/* Title */
+.history-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #3b82f6; /* Blue-500 */
+  margin-bottom: 2rem;
+}
+
+/* ============================== */
+/* Table Wrapper */
+.history-table-wrapper {
+  overflow-x: auto;
+}
+
+/* ============================== */
+/* Table Styling */
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 0.95rem;
+  min-width: 600px;
+}
+
+.history-table th {
+  background: #f1f5f9; /* Gray-100 */
+  color: #1e293b; /* Gray-800 */
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  border-bottom: 2px solid #e2e8f0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.history-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.history-table tr:nth-child(even) {
+  background: #f9fafb; /* Gray-50 */
+}
+
+.history-table tr:hover {
+  background: #e0f2fe; /* Blue-100 */
+  cursor: pointer;
+  transform: translateX(2px);
+}
+
+/* ============================== */
+/* Highlighted Cells */
+.sip-cell {
+  color: #16a34a; /* Green-600 */
+  font-weight: 600;
+}
+
+.fd-cell {
+  color: #10b981; /* Green-500 */
+  font-weight: 600;
+}
+
+.stocks-cell {
+  color: #f59e0b; /* Amber-500 */
+  font-weight: 600;
+}
+
+/* ============================== */
+/* Loading State */
+.history-loading {
+  text-align: center;
+  margin-top: 6rem;
+  color: #334155; /* Gray-700 */
+  font-weight: 500;
+}
+
+.spinner {
+  margin: 0 auto 1rem;
+  border: 4px solid #e2e8f0; /* Gray-200 */
+  border-top: 4px solid #3b82f6; /* Blue-500 */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+/* ============================== */
+/* Error & Empty States */
+.history-error {
+  text-align: center;
+  margin-top: 5rem;
+  color: #ef4444; /* Red-500 */
+  font-weight: 600;
+}
+
+.history-empty {
+  text-align: center;
+  margin-top: 5rem;
+  color: #6b7280; /* Gray-500 */
+  font-style: italic;
+}
+
+/* ============================== */
+/* Animations */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(15px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+      transform: rotate(360deg);
+  }
+}
+
+/* ============================== */
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .history-table th,
+  .history-table td {
+      padding: 0.5rem 0.75rem;
+  }
+}

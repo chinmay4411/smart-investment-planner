@@ -1,0 +1,159 @@
+/* ===============================
+   GLOBAL STYLING
+================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background: #f5f7fa;
+  color: #1a1a1a;
+  line-height: 1.6;
+}
+
+/* Smooth fade animation when switching pages */
+.page-transition {
+  animation: fadeIn 0.5s ease-in-out;
+  padding: 40px 20px;
+  min-height: 80vh;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===============================
+   NAVBAR
+================================= */
+
+.navbar {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.65);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.3);
+  padding: 12px 0;
+}
+
+.nav-content {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Brand logo with glow animation */
+.brand-glow {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+
+  color: #0a2a43;
+  transition: 0.3s ease;
+}
+
+.brand-glow:hover {
+  color: #0077ff;
+  text-shadow: 0px 0px 10px rgba(0, 119, 255, 0.5);
+}
+
+.logo-icon {
+  margin-right: 8px;
+  font-size: 1.8rem;
+}
+
+/* Nav links container */
+.nav-links {
+  display: flex;
+  gap: 18px;
+}
+
+/* Single nav link */
+.nav-link {
+  text-decoration: none;
+  color: #1c1c1c;
+  font-size: 0.95rem;
+  padding: 8px 14px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  transition: all 0.25s ease;
+}
+
+.nav-link:hover {
+  background: rgba(0, 119, 255, 0.08);
+  color: #0077ff;
+  transform: translateY(-1px);
+}
+
+/* Active page indicator */
+.nav-link.active {
+  background: #0077ff;
+  color: white;
+  box-shadow: 0px 4px 10px rgba(0, 119, 255, 0.35);
+}
+
+.nav-icon {
+  margin-right: 8px;
+  display: flex;
+}
+
+/* ===============================
+   FOOTER
+================================= */
+
+.footer {
+  text-align: center;
+  padding: 18px;
+  background: #f0f4f8;
+  border-top: 1px solid #d9e2ec;
+  color: #4a5568;
+  font-size: 0.9rem;
+}
+
+.footer .highlight {
+  color: #0077ff;
+  font-weight: 600;
+}
+
+.footer .name {
+  color: #0f172a;
+}
+
+/* ===============================
+   MOBILE RESPONSIVE
+================================= */
+
+@media (max-width: 768px) {
+  .nav-content {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .nav-link {
+    padding: 10px 12px;
+  }
+}

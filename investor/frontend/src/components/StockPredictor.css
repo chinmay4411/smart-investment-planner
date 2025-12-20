@@ -1,0 +1,197 @@
+:root {
+  --primary-blue: #3b82f6;
+  --primary-green: #16a34a;
+  --primary-orange: #f59e0b;
+  --bg-light: #f9fafb;
+  --bg-card: #ffffff;
+  --text-dark: #1f2937;
+  --text-gray: #6b7280;
+  --gap: 2rem;
+}
+
+/* ================== */
+/* Dashboard Parent Container */
+.dashboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap);
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  justify-content: center;
+}
+
+/* ================== */
+/* Each Section Card */
+.card {
+  background: var(--bg-card);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.06);
+  flex: 1 1 360px; /* Grow, shrink, base width */
+  min-width: 360px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.12);
+}
+
+.card h2 {
+  font-size: 1.5rem;
+  color: var(--text-dark);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* ================== */
+/* Stock Predictor */
+.sp-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sp-select {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.sp-btn {
+  padding: 0.6rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  cursor: pointer;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.sp-btn.active {
+  border-color: var(--primary-blue);
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.sp-analysis, .sp-pred {
+  background: #f3f4f6;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  flex: 1;
+}
+
+/* Actions Buttons */
+.sp-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.sp-actions button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  border: none;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.sp-actions button:nth-child(1) { background: var(--primary-blue); }
+.sp-actions button:nth-child(2) { background: var(--primary-green); }
+
+/* ================== */
+/* Allocation Chart */
+.alloc-chart {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ================== */
+/* History Table */
+.history {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.tbl-wrap {
+  overflow-x: auto;
+  flex: 1;
+}
+
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tbl th, .tbl td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tbl th {
+  background: #f3f4f6;
+  color: var(--text-dark);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.tbl tr:nth-child(even) {
+  background: var(--bg-light);
+}
+
+.tbl tr:hover {
+  background: #eff6ff;
+}
+
+/* ================== */
+/* Investment Data Cards */
+.invest-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.invest-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-dark);
+}
+
+.invest-card p {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+/* ================== */
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .dashboard {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  .sp-actions {
+    flex-direction: column;
+  }
+}
