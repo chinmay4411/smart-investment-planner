@@ -1,19 +1,19 @@
-// src/api/goalService.js
 import axios from "axios";
 
+// Axios instance
 const API = axios.create({
-  baseURL: "https://smartinvestmentplanner-11.onrender.com",
+  baseURL: import.meta.env.VITE_API_URL, // 👈 best practice
 });
 
+// CREATE goal
+export const saveGoal = (goal) => API.post("/goals", goal);
 
-// CREATE goal  
-export const saveGoal = (goal) => API.post("/", goal);
+// GET all goals
+export const getGoals = () => API.get("/goals");
 
-// GET all goals  
-export const getGoals = () => API.get("/");
+// DELETE goal
+export const deleteGoal = (id) => API.delete(`/goals/${id}`);
 
-// DELETE goal  
-export const deleteGoal = (id) => API.delete(`/${id}`);
-
-// UPDATE goal  
-export const updateGoal = (id, updatedGoal) => API.put(`/${id}`, updatedGoal);
+// UPDATE goal
+export const updateGoal = (id, updatedGoal) =>
+  API.put(`/goals/${id}`, updatedGoal);
